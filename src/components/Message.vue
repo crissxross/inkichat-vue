@@ -5,15 +5,6 @@
       <app-says-message :chatMsg="chatMsg"></app-says-message>
     </div>
 
-    <!-- <div v-if="chatMsg.actionType == 'SAYS' && chatMsg.actor == 'other'" class="other-grid">
-      <div class="icon"><i class="material-icons">account_circle</i></div>
-      <div class="msg">{{ chatMsg.text }}</div>
-    </div>
-    <div v-else-if="chatMsg.actionType == 'SAYS' && chatMsg.actor == 'girl'" class="self-grid">
-      <div class="icon"><i class="material-icons">face</i></div>
-      <div class="msg">{{ chatMsg.text }}</div>
-    </div> -->
-
     <!-- OPTIONS -->
     <div v-else-if="chatMsg.actionType == 'OPTIONS' && chatMsg.actor == 'other'" class="quiz-grid other">
       <a class="q-option btn" @click="choose('A')">
@@ -36,15 +27,6 @@
     <div v-if="chatMsg.actionType == 'REPLIES'" class="message-grid">
       <app-replies-message :chatMsg="chatMsg"></app-replies-message>
     </div>
-
-    <!-- <div v-else-if="chatMsg.actionType == 'REPLIES' && chatMsg.actor == 'other'" class="other-grid">
-      <div class="icon"><i class="material-icons">account_circle</i></div>
-      <div class="msg">other REPLIES...{{chatMsg.replies[0]}}</div>
-    </div>
-    <div v-else-if="chatMsg.actionType == 'REPLIES' && chatMsg.actor == 'girl'" class="self-grid">
-      <div class="icon"><i class="material-icons">face</i></div>
-      <div class="msg">girl REPLIES...{{chatMsg.replies[0]}}</div>
-    </div> -->
 
   </div>
 </template>
@@ -69,69 +51,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-$self-color: #0077e6;
-$other-color: #9e0012;
+@import '../variables.scss';
 
 .message-grid {
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
   grid-row-gap: 10px;
 }
-/*
-.other-grid {
-  grid-column: 1 / span 2;
-  display: grid;
-  grid-template-columns: 36px 1fr;
-  align-items: end;
-}
 
-.self-grid {
-  grid-column: 2 / span 2;
-  display: grid;
-  grid-template-columns: 1fr 36px;
-  align-items: end;
-}
-
-.other-grid > .msg {
-  background-color: $other-color;
-  grid-column: 2;
-  justify-self: start;
-}
-
-.other-grid .icon {
-  grid-column: 1;
-  color: $other-color;
-}
-
-.self-grid .msg {
-  background-color: $self-color;
-  grid-column: 1;
-  justify-self: end;
-  order: 1;
-}
-
-.self-grid .icon {
-  grid-column: 2;
-  order: 2;
-  color: $self-color;
-}
-
-.msg, .q-option {
-  padding: 10px;
-  border-radius: 10px;
-}
-
-.icon {
-  text-align: center;
-}
-
-.material-icons {
-  font-size: 30px;
-}
-*/
 /* ----- for quizzy questions ----- */
-
 .quiz-grid {
   grid-column: 1 / span 3;
   display: grid;

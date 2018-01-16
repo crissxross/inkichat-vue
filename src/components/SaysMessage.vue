@@ -16,9 +16,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-$self-color: #0077e6;
-$other-color: #9e0012;
+@import '../variables.scss';
 
 .other-grid {
   grid-column: 1 / span 2;
