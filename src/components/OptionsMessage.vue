@@ -1,20 +1,12 @@
 <template>
-  <div v-if="chatMsg.actor == 'other'" class="quiz-grid other">
-      <a class="q-option btn" @click="choose('A', chatMsg.id)">
-        {{chatMsg.options[0].text}}</a>
-      <a class="q-option btn" @click="choose('B', chatMsg.id)">
-        {{chatMsg.options[1].text}}</a>
-      <a class="q-option btn" @click="choose('C', chatMsg.id)">
-        {{chatMsg.options[2].text}}</a>
-    </div>
-    <div v-else-if="chatMsg.actor == 'girl'" class="quiz-grid self">
-      <a class="q-option btn" @click="choose('A', chatMsg.id)">
-        {{chatMsg.options[0].text}}</a>
-      <a class="q-option btn" @click="choose('B', chatMsg.id)">
-        {{chatMsg.options[1].text}}</a>
-      <a class="q-option btn" @click="choose('C', chatMsg.id)">
-        {{chatMsg.options[2].text}}</a>
-    </div>
+  <div :class="chatMsg.actor == 'other' ? otherClass : selfClass">
+    <a class="q-option btn" @click="choose('A', chatMsg.id)">
+      {{chatMsg.options[0].text}}</a>
+    <a class="q-option btn" @click="choose('B', chatMsg.id)">
+      {{chatMsg.options[1].text}}</a>
+    <a class="q-option btn" @click="choose('C', chatMsg.id)">
+      {{chatMsg.options[2].text}}</a>
+  </div>
 </template>
 
 <script>
@@ -22,6 +14,12 @@ import { eventBus } from '../main';
 
 export default {
   props: ['chatMsg'],
+  data() {
+    return {
+      otherClass: 'quiz-grid other',
+      selfClass: 'quiz-grid self'
+    };
+  },
   methods: {
     choose(option, id) {
       console.log('OptionsMessage chose:', option, id);
