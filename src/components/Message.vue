@@ -1,14 +1,19 @@
 <template>
-  <div class="message-grid">
+  <div>
     <!-- SAYS -->
-    <div v-if="chatMsg.actionType == 'SAYS' && chatMsg.actor == 'other'" class="other-grid">
+    <div v-if="chatMsg.actionType == 'SAYS'" class="message-grid">
+      <app-says-message :chatMsg="chatMsg"></app-says-message>
+    </div>
+
+    <!-- <div v-if="chatMsg.actionType == 'SAYS' && chatMsg.actor == 'other'" class="other-grid">
       <div class="icon"><i class="material-icons">account_circle</i></div>
       <div class="msg">{{ chatMsg.text }}</div>
     </div>
     <div v-else-if="chatMsg.actionType == 'SAYS' && chatMsg.actor == 'girl'" class="self-grid">
       <div class="icon"><i class="material-icons">face</i></div>
       <div class="msg">{{ chatMsg.text }}</div>
-    </div>
+    </div> -->
+
     <!-- OPTIONS -->
     <div v-else-if="chatMsg.actionType == 'OPTIONS' && chatMsg.actor == 'other'" class="quiz-grid other">
       <a class="q-option btn" @click="choose('A')">
@@ -26,21 +31,33 @@
       <a class="q-option btn" @click="choose('C')">
         {{chatMsg.options[2].text}}</a>
     </div>
+
     <!-- REPLIES -->
-    <div v-if="chatMsg.actionType == 'REPLIES' && chatMsg.actor == 'other'" class="other-grid">
+    <div v-if="chatMsg.actionType == 'REPLIES'" class="message-grid">
+      <app-replies-message :chatMsg="chatMsg"></app-replies-message>
+    </div>
+
+    <!-- <div v-else-if="chatMsg.actionType == 'REPLIES' && chatMsg.actor == 'other'" class="other-grid">
       <div class="icon"><i class="material-icons">account_circle</i></div>
       <div class="msg">other REPLIES...{{chatMsg.replies[0]}}</div>
     </div>
     <div v-else-if="chatMsg.actionType == 'REPLIES' && chatMsg.actor == 'girl'" class="self-grid">
       <div class="icon"><i class="material-icons">face</i></div>
       <div class="msg">girl REPLIES...{{chatMsg.replies[0]}}</div>
-    </div>
+    </div> -->
 
   </div>
 </template>
 
 <script>
+import SaysMessage from './SaysMessage';
+import RepliesMessage from './RepliesMessage';
+
 export default {
+  components: {
+    appSaysMessage: SaysMessage,
+    appRepliesMessage: RepliesMessage
+  },
   props: ['chatMsg'],
   methods: {
     choose(option) {
@@ -52,6 +69,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 $self-color: #0077e6;
 $other-color: #9e0012;
 
@@ -60,7 +78,7 @@ $other-color: #9e0012;
   grid-template-columns: 1fr 2fr 1fr;
   grid-row-gap: 10px;
 }
-
+/*
 .other-grid {
   grid-column: 1 / span 2;
   display: grid;
@@ -106,13 +124,12 @@ $other-color: #9e0012;
 
 .icon {
   text-align: center;
-/*   border: 1px solid #666; */
 }
 
 .material-icons {
   font-size: 30px;
 }
-
+*/
 /* ----- for quizzy questions ----- */
 
 .quiz-grid {
@@ -126,6 +143,11 @@ $other-color: #9e0012;
   border-radius: 10px;
   box-shadow: 0 0.2em 0.5em rgba(0, 0, 0, 0.4);
 /*   box-shadow: 0 0.2em 0.2em rgba(0, 0, 0, 0.3); */
+}
+
+.q-option {
+  padding: 10px;
+  border-radius: 10px;
 }
 
 .other .q-option {
