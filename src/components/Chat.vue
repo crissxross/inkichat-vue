@@ -1,11 +1,10 @@
 <template>
   <div class="container-grid">
-    <small style="background-color: grey">* msg id & chosen option: {{ msgId }} {{ chosenOption }} </small>
+    <!-- <small style="background-color: grey">(msg. {{ msgId }} ) chosen option: {{ chosenOption }} </small> -->
     <app-message
       v-for="msg in chatdata"
       :chatMsg="msg"
-      :key="msg.id"
-      v-on:optionChosen="recordChoice($event, msg.id)">
+      :key="msg.id">
     </app-message>
   </div>
 </template>
@@ -13,6 +12,7 @@
 <script>
 import Message from './Message';
 import { dialogChatData } from '../data/inkidialog-short';
+import { eventBus } from '../main';
 
 export default {
   components: {
@@ -25,15 +25,13 @@ export default {
       msgId: ''
     };
   },
-  methods: {
-    recordChoice(option, id) {
-      this.chosenOption = option;
-      this.msgId = id;
-      console.log('Chat component records choice:', this.chosenOption, 'msg.id:', id);
-    }
-  },
   created() {
     console.log('Chat component created');
+    eventBus.$on('optionChosen', (option, id) => {
+      this.chosenOption = option;
+      this.msgId = id;
+      console.log('Chat component handles event choice:', this.chosenOption, this.msgId);
+    });
   }
 
 };
@@ -43,8 +41,8 @@ export default {
 .container-grid {
   display: grid;
   grid-row-gap: 10px;
-  /* padding: 20px 5px 10px; */
-  padding: 5px;
+  padding: 10px 5px 10px;
+  /* padding: 5px; */
   color: #F4F4F4;
 }
 </style>
