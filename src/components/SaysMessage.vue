@@ -1,10 +1,9 @@
 <template>
-  <div v-if="chatMsg.actor == 'other'" class="other-grid">
-    <div class="icon"><i class="material-icons">account_circle</i></div>
-    <div class="msg">{{ chatMsg.text }}</div>
-  </div>
-  <div v-else-if="chatMsg.actor == 'girl'" class="self-grid">
-    <div class="icon"><i class="material-icons">face</i></div>
+  <div :class="chatMsg.actor == 'other' ? 'other-grid' : 'self-grid' ">
+    <div class="icon">
+      <i v-if="chatMsg.actor == 'other'" class="material-icons">account_circle</i>
+      <i v-else class="material-icons">face</i>
+    </div>
     <div class="msg">{{ chatMsg.text }}</div>
   </div>
 </template>
