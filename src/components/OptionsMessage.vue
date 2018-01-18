@@ -17,12 +17,14 @@ export default {
   data() {
     return {
       otherClass: 'quiz-grid other',
-      selfClass: 'quiz-grid self'
+      selfClass: 'quiz-grid self',
+      chosenOptionId: null,
+      choiceMade: false
     };
   },
   methods: {
     choose(option, id) {
-      console.log('OptionsMessage chose:', option, id);
+      console.log('OptionsMessage chose:', id, option);
       eventBus.$emit('optionChosen', option, id);
     }
   }

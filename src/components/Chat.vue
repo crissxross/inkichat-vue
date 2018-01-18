@@ -1,12 +1,12 @@
 <template>
   <div class="container-grid">
     <!-- p for TESTING only -->
-    <p style="color: grey"> <small>Send messages:</small>
+    <!-- <p style="color: grey"> <small>Send messages:</small>
       <button @click="startSendingMessages">START</button>
       <button @click="stopSendingMessages">STOP</button>
       <button @click="sendNextMessage">Next one</button>
       <small>(msg. {{ msgId }} ) chosen option: {{ chosenOption }}</small>
-    </p>
+    </p> -->
     <app-message
       v-for="msg in displayedMessages"
       :chatMsg="msg"
@@ -33,17 +33,18 @@ export default {
       start: false,
       sendInterval: null,
       delay: 1000,
-      chosenOption: '',
-      msgId: ''
+      chosenOption: '', // is this useful for anything?
+      msgId: '' // is this useful for anything?
     };
   },
   created() {
     console.log('chatdata.length:', this.chatdata.length);
     this.startSendingMessages();
     eventBus.$on('optionChosen', (option, id) => {
+      this.handleChosenOptionMsg(option, id);
+      // the following is probably unnecessary
       this.chosenOption = option;
       this.msgId = id;
-      console.log('Chat component handles event choice:', this.chosenOption, this.msgId);
     });
   },
   methods: {
@@ -58,6 +59,11 @@ export default {
         this.currentMessage = this.chatdata.slice(this.currentMsgId, nextMsgId);
         this.currentMsgId++;
         console.log('currentMsgId updated:', this.currentMsgId);
+        if (this.currentMessage[0].actionType === 'OPTIONS') {
+          console.log('OPTIONS msg!');
+          this.stopSendingMessages();
+          return this.displayedMessages.push(this.currentMessage[0]);
+        }
         return this.displayedMessages.push(this.currentMessage[0]);
       } else {
         console.log('No more messages to send!');
@@ -68,6 +74,10 @@ export default {
       clearInterval(this.sendInterval);
       this.start = false;
       console.log('start:', this.start);
+    },
+    handleChosenOptionMsg(option, id) {
+      console.log('handleChosenOptionMsg msg id & option:', id, option);
+      this.startSendingMessages();
     }
   }
   // Does anything need to be a computed property?
