@@ -18,7 +18,7 @@
 <script>
 import Message from './Message';
 import { dialogChatData } from '../data/inkidialog-short';
-import { eventBus } from '../main';
+import { eventBus } from '../event-bus';
 
 export default {
   components: {
@@ -32,9 +32,7 @@ export default {
       displayedMessages: [],
       start: false,
       sendInterval: null,
-      delay: 1000,
-      chosenOption: '', // is this useful for anything?
-      msgId: '' // is this useful for anything?
+      delay: 1000
     };
   },
   created() {
@@ -42,9 +40,6 @@ export default {
     this.startSendingMessages();
     eventBus.$on('optionChosen', (option, id) => {
       this.handleChosenOptionMsg(option, id);
-      // the following is probably unnecessary
-      this.chosenOption = option;
-      this.msgId = id;
     });
   },
   methods: {
@@ -76,7 +71,7 @@ export default {
       console.log('start:', this.start);
     },
     handleChosenOptionMsg(option, id) {
-      console.log('handleChosenOptionMsg msg id & option:', id, option);
+      console.log('handleChosenOptionMsg msg id:', id, ' option:', option);
       this.startSendingMessages();
     }
   }

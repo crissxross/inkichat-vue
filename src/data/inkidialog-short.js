@@ -42,9 +42,9 @@ export const dialogChatData = [
     actor: 'other',
     actionType: 'REPLIES',
     replies: [
-      'omg',
-      'omg',
-      'omg'
+      'omg [0]',
+      'sad [1]',
+      'haha [2]'
     ]
   },
   {

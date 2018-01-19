@@ -4,13 +4,29 @@
       <i v-if="chatMsg.actor == 'other'" class="material-icons">account_circle</i>
       <i v-else class="material-icons">face</i>
     </div>
-    <div class="msg">REPLIES... {{ chatMsg.replies[0] }} [0]</div>
+    <div class="msg">REPLIES... {{ chatMsg.replies[replyId] }}</div>
   </div>
 </template>
 
 <script>
+import { eventBus } from '../event-bus';
+
 export default {
-  props: ['chatMsg']
+  props: ['chatMsg'],
+  data() {
+    return {
+      replyId: null
+    };
+  },
+  created() {
+    eventBus.$on('optionChosen', (option, id) => {
+      console.log('RepliesMessage eventBus.$on... msg id:', id, 'option:', option);
+      this.replyId = option;
+    });
+  }
+  // MAYBE THE PROBLEM IS I NEED TO SEND ANOTHER MESSAGE BACK TO THE EVENTBUS TRIGGER THE APPROPRIATE  ???
+
+  // OR is it time to use VUEX ???
 };
 </script>
 

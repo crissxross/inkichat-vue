@@ -1,16 +1,25 @@
 <template>
-  <div :class="chatMsg.actor == 'other' ? otherClass : selfClass">
-    <a class="q-option btn" @click="choose('A', chatMsg.id)">
+  <!-- show options -->
+  <div v-if="!choiceMade" :class="chatMsg.actor == 'other' ? otherClass : selfClass">
+    <a class="q-option btn" @click="choose(0, chatMsg.id)">
       {{chatMsg.options[0].text}}</a>
-    <a class="q-option btn" @click="choose('B', chatMsg.id)">
+    <a class="q-option btn" @click="choose(1, chatMsg.id)">
       {{chatMsg.options[1].text}}</a>
-    <a class="q-option btn" @click="choose('C', chatMsg.id)">
+    <a class="q-option btn" @click="choose(2, chatMsg.id)">
       {{chatMsg.options[2].text}}</a>
+  </div>
+  <!-- show chosen option if choice made -->
+  <div v-else :class="chatMsg.actor == 'other' ? 'other-grid' : 'self-grid' ">
+    <div class="icon">
+      <i v-if="chatMsg.actor == 'other'" class="material-icons">account_circle</i>
+      <i v-else class="material-icons">face</i>
+    </div>
+    <div class="msg">{{ chatMsg.options[chosenOptionId].text }}</div>
   </div>
 </template>
 
 <script>
-import { eventBus } from '../main';
+import { eventBus } from '../event-bus';
 
 export default {
   props: ['chatMsg'],
@@ -18,14 +27,17 @@ export default {
     return {
       otherClass: 'quiz-grid other',
       selfClass: 'quiz-grid self',
-      chosenOptionId: null,
+      chosenOptionId: 0,
       choiceMade: false
     };
   },
   methods: {
     choose(option, id) {
       console.log('OptionsMessage chose:', id, option);
+      this.choiceMade = true;
+      this.chosenOptionId = option;
       eventBus.$emit('optionChosen', option, id);
+      // console.log('choice made:', this.choiceMade, this.chosenOptionId);
     }
   }
 };
@@ -47,7 +59,7 @@ export default {
 /*   box-shadow: 0 0.2em 0.2em rgba(0, 0, 0, 0.3); */
 }
 
-.q-option {
+.msg, .q-option {
   padding: 10px;
   border-radius: 10px;
 }
@@ -67,6 +79,53 @@ export default {
 
 a:hover {
   box-shadow: inset 0 0 1.5em rgba(255, 255, 255, 0.5), 0 0 1em rgba(0, 0, 0, 0.5);
+}
+
+.other-grid {
+  grid-column: 1 / span 2;
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  align-items: end;
+}
+
+.self-grid {
+  grid-column: 2 / span 2;
+  display: grid;
+  grid-template-columns: 1fr 36px;
+  align-items: end;
+}
+
+.other-grid > .msg {
+  background-color: $other-color;
+  grid-column: 2;
+  justify-self: start;
+}
+
+.other-grid .icon {
+  grid-column: 1;
+  color: $other-color;
+}
+
+.self-grid .msg {
+  background-color: $self-color;
+  grid-column: 1;
+  justify-self: end;
+  order: 1;
+}
+
+.self-grid .icon {
+  grid-column: 2;
+  order: 2;
+  color: $self-color;
+}
+
+.icon {
+  text-align: center;
+/*   border: 1px solid #666; */
+}
+
+.material-icons {
+  font-size: 30px;
 }
 
 </style>
