@@ -1,8 +1,8 @@
 <template>
   <div :class="chatMsg.actor == 'other' ? 'other-grid' : 'self-grid' ">
     <div class="icon">
-      <i v-if="chatMsg.actor == 'other'" class="material-icons">account_circle</i>
-      <i v-else class="material-icons">face</i>
+      <img v-if="chatMsg.actor == 'other'" src="../assets/acount_circle.svg" class="icon-other" />
+      <img v-else src="../assets/face.svg" class="icon-self" />
     </div>
     <div class="msg">{{ chatMsg.text }}</div>
   </div>
@@ -60,13 +60,14 @@ export default {
   border-radius: 10px;
 }
 
+.icon-other, .icon-self {
+  height: 30px;
+  fill: green;
+}
+
 .icon {
   text-align: center;
 /*   border: 1px solid #666; */
-}
-
-.material-icons {
-  font-size: 30px;
 }
 
 </style>

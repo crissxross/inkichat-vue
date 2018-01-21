@@ -10,7 +10,10 @@
     </div>
     <!-- REPLIES -->
     <div v-else-if="chatMsg.actionType == 'REPLIES'" class="message-grid">
-      <app-replies-message :chatMsg="chatMsg"></app-replies-message>
+      <app-replies-message
+        :chatMsg="chatMsg"
+        :replyId="replyId">
+      </app-replies-message>
     </div>
   </div>
 </template>
@@ -26,7 +29,7 @@ export default {
     appRepliesMessage: RepliesMessage,
     appOptionsMessage: OptionsMessage
   },
-  props: ['chatMsg']
+  props: ['chatMsg', 'replyId']
 };
 </script>
 

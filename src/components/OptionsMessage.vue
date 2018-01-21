@@ -11,8 +11,8 @@
   <!-- show chosen option if choice made -->
   <div v-else :class="chatMsg.actor == 'other' ? 'other-grid' : 'self-grid' ">
     <div class="icon">
-      <i v-if="chatMsg.actor == 'other'" class="material-icons">account_circle</i>
-      <i v-else class="material-icons">face</i>
+      <img v-if="chatMsg.actor == 'other'" src="../assets/acount_circle.svg" class="icon-other" />
+      <img v-else src="../assets/face.svg" class="icon-self" />
     </div>
     <div class="msg">{{ chatMsg.options[chosenOptionId].text }}</div>
   </div>
@@ -27,16 +27,16 @@ export default {
     return {
       otherClass: 'quiz-grid other',
       selfClass: 'quiz-grid self',
-      chosenOptionId: 0,
-      choiceMade: false
+      chosenOptionId: null,
+      choiceMade: false // is this necessary?
     };
   },
   methods: {
-    choose(option, id) {
-      console.log('OptionsMessage chose:', id, option);
+    choose(option, msgId) {
+      console.log('OptionsMessage chose:', msgId, option);
       this.choiceMade = true;
       this.chosenOptionId = option;
-      eventBus.$emit('optionChosen', option, id);
+      eventBus.$emit('optionChosen', option, msgId);
       // console.log('choice made:', this.choiceMade, this.chosenOptionId);
     }
   }
@@ -119,13 +119,13 @@ a:hover {
   color: $self-color;
 }
 
+.icon-other, .icon-self {
+  height: 30px;
+}
+
 .icon {
   text-align: center;
 /*   border: 1px solid #666; */
-}
-
-.material-icons {
-  font-size: 30px;
 }
 
 </style>

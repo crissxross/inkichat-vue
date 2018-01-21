@@ -10,7 +10,8 @@
     <app-message
       v-for="msg in displayedMessages"
       :chatMsg="msg"
-      :key="msg.id">
+      :key="msg.id"
+      :replyId="currentReplyId">
     </app-message>
   </div>
 </template>
@@ -30,6 +31,7 @@ export default {
       currentMsgId: 0,
       currentMessage: [],
       displayedMessages: [],
+      currentReplyId: null,
       start: false,
       sendInterval: null,
       delay: 1000
@@ -38,8 +40,8 @@ export default {
   created() {
     console.log('chatdata.length:', this.chatdata.length);
     this.startSendingMessages();
-    eventBus.$on('optionChosen', (option, id) => {
-      this.handleChosenOptionMsg(option, id);
+    eventBus.$on('optionChosen', (option, msgId) => {
+      this.handleChosenOptionMsg(option, msgId);
     });
   },
   methods: {
@@ -70,10 +72,24 @@ export default {
       this.start = false;
       console.log('start:', this.start);
     },
-    handleChosenOptionMsg(option, id) {
-      console.log('handleChosenOptionMsg msg id:', id, ' option:', option);
+    handleChosenOptionMsg(option, msgId) {
+      console.log('handleChosenOptionMsg msg id:', msgId, ' option:', option);
+      // THIS IS NOT THE SOLUTION !!!
+      // Maybe I need to solve it in the RepliesMessage component ???
+      if (this.currentMsgId === msgId) {
+        this.currentReplyId = option;
+      }
       this.startSendingMessages();
+      return this.currentReplyId;
     }
+    // handleChosenOptionMsg(option, msgId) {
+    //   const optionIds = [];
+    //   optionIds.push(option);
+    //   console.log('handleChosenOptionMsg msg id:', msgId, ' option:', option);
+    //   this.currentReplyId = optionIds[optionIds.length - 1];
+    //   this.startSendingMessages();
+    //   return this.currentReplyId;
+    // }
   }
   // Does anything need to be a computed property?
 };

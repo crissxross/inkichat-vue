@@ -1,32 +1,21 @@
 <template>
   <div :class="chatMsg.actor == 'other' ? 'other-grid' : 'self-grid' ">
     <div class="icon">
-      <i v-if="chatMsg.actor == 'other'" class="material-icons">account_circle</i>
-      <i v-else class="material-icons">face</i>
+      <img v-if="chatMsg.actor == 'other'" src="../assets/acount_circle.svg" class="icon-other" />
+      <img v-else src="../assets/face.svg" class="icon-self" />
     </div>
     <div class="msg">REPLIES... {{ chatMsg.replies[replyId] }}</div>
   </div>
 </template>
 
 <script>
-import { eventBus } from '../event-bus';
+// I think I need to add some functionality in this component to fix the appropriate replyId to the specific chatMsg id - otherwise ALL reply messages are updated when replyId changes !!!
 
 export default {
-  props: ['chatMsg'],
-  data() {
-    return {
-      replyId: null
-    };
-  },
+  props: ['chatMsg', 'replyId'],
   created() {
-    eventBus.$on('optionChosen', (option, id) => {
-      console.log('RepliesMessage eventBus.$on... msg id:', id, 'option:', option);
-      this.replyId = option;
-    });
+    console.log('on created replyId is', this.replyId);
   }
-  // MAYBE THE PROBLEM IS I NEED TO SEND ANOTHER MESSAGE BACK TO THE EVENTBUS TRIGGER THE APPROPRIATE  ???
-
-  // OR is it time to use VUEX ???
 };
 </script>
 
@@ -76,13 +65,13 @@ export default {
   border-radius: 10px;
 }
 
+.icon-other, .icon-self {
+  height: 30px;
+}
+
 .icon {
   text-align: center;
 /*   border: 1px solid #666; */
-}
-
-.material-icons {
-  font-size: 30px;
 }
 
 </style>

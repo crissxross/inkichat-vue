@@ -107,9 +107,9 @@ export const dialogChatData = [
     actor: 'other',
     actionType: 'REPLIES',
     replies: [
-      'ha ha only kidding',
-      'False modesty don\'t work on me, babe.',
-      'Don\'t get clever, it doesn\'t suit you.'
+      'ha ha only kidding [0]',
+      'False modesty don\'t work on me, babe. [1]',
+      'Don\'t get clever, it doesn\'t suit you. [2]'
     ]
   },
   {
