@@ -1,6 +1,7 @@
 <template>
+  <transition name="slideup-fade" mode="out-in">
   <!-- show options -->
-  <div v-if="!choiceMade" :class="chatMsg.actor == 'other' ? otherClass : selfClass">
+  <div v-if="!choiceMade" :class="chatMsg.actor == 'other' ? otherClass : selfClass" key="choose">
     <a class="q-option btn" @click="choose(chatMsg.id, 0)">
       {{chatMsg.options[0].text}}</a>
     <a class="q-option btn" @click="choose(chatMsg.id, 1)">
@@ -9,13 +10,14 @@
       {{chatMsg.options[2].text}}</a>
   </div>
   <!-- show chosen option if choice made -->
-  <div v-else :class="chatMsg.actor == 'other' ? 'other-grid' : 'self-grid' ">
+  <div v-else :class="chatMsg.actor == 'other' ? 'other-grid' : 'self-grid'" key="chosen">
     <div class="icon">
       <img v-if="chatMsg.actor == 'other'" src="../assets/acount_circle.svg" class="icon-other" />
       <img v-else src="../assets/face.svg" class="icon-self" />
     </div>
     <div class="msg">{{ chatMsg.options[chosenOptionId].text }}</div>
   </div>
+  </transition>
 </template>
 
 <script>
@@ -125,6 +127,19 @@ a:hover {
 .icon {
   text-align: center;
 /*   border: 1px solid #666; */
+}
+
+/* ANIMATION - scoped here with faster timings */
+.slideup-fade-enter-active, .slideup-fade-leave-active {
+  transition: all .3s;
+}
+.slideup-fade-enter {
+  transform: translateY(5px);
+  opacity: 0;
+}
+.slideup-fade-leave-to {
+  transform: translateY(-5px);
+  opacity: 0;
 }
 
 </style>

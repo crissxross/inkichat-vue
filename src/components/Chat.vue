@@ -1,7 +1,7 @@
 <template>
   <div class="container-grid">
     <app-message
-      v-for="msg in displayedMessages"
+      v-for="msg in sentMessages"
       :chatMsg="msg"
       :key="msg.id"
       :replyId="currentReplyId">
@@ -23,11 +23,11 @@ export default {
       chatdata: dialogChatData,
       currentMsgId: 0,
       currentMessage: [],
-      displayedMessages: [],
+      sentMessages: [],
       currentReplyId: null,
       start: false,
       sendInterval: null,
-      delay: 500
+      delay: 1000
     };
   },
   created() {
@@ -53,9 +53,9 @@ export default {
         if (this.currentMessage[0].actionType === 'OPTIONS') {
           console.log('OPTIONS msg!');
           this.stopSendingMessages();
-          return this.displayedMessages.push(this.currentMessage[0]);
+          return this.sentMessages.push(this.currentMessage[0]);
         }
-        return this.displayedMessages.push(this.currentMessage[0]);
+        return this.sentMessages.push(this.currentMessage[0]);
       } else {
         console.log('No more messages to send!');
         this.stopSendingMessages();

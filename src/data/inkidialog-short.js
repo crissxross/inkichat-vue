@@ -97,7 +97,7 @@ export const dialogChatData = [
         score: 5
       },
       {
-        text: 'how do you kow I\'m not already?',
+        text: 'how do you know I\'m not already?',
         score: 0
       }
     ]
