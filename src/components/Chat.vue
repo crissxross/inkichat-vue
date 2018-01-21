@@ -1,12 +1,5 @@
 <template>
   <div class="container-grid">
-    <!-- p for TESTING only -->
-    <!-- <p style="color: grey"> <small>Send messages:</small>
-      <button @click="startSendingMessages">START</button>
-      <button @click="stopSendingMessages">STOP</button>
-      <button @click="sendNextMessage">Next one</button>
-      <small>(msg. {{ msgId }} ) chosen option: {{ chosenOption }}</small>
-    </p> -->
     <app-message
       v-for="msg in displayedMessages"
       :chatMsg="msg"
@@ -34,14 +27,15 @@ export default {
       currentReplyId: null,
       start: false,
       sendInterval: null,
-      delay: 1000
+      delay: 500
     };
   },
   created() {
     console.log('chatdata.length:', this.chatdata.length);
     this.startSendingMessages();
-    eventBus.$on('optionChosen', (option, msgId) => {
-      this.handleChosenOptionMsg(option, msgId);
+    eventBus.$on('optionChosen', (msgId, option) => {
+      this.handleChosenOptionMsg(msgId, option);
+      // this.startSendingMessages();
     });
   },
   methods: {
@@ -72,26 +66,15 @@ export default {
       this.start = false;
       console.log('start:', this.start);
     },
-    handleChosenOptionMsg(option, msgId) {
+    handleChosenOptionMsg(msgId, option) {
       console.log('handleChosenOptionMsg msg id:', msgId, ' option:', option);
-      // THIS IS NOT THE SOLUTION !!!
-      // Maybe I need to solve it in the RepliesMessage component ???
       if (this.currentMsgId === msgId) {
         this.currentReplyId = option;
       }
       this.startSendingMessages();
       return this.currentReplyId;
     }
-    // handleChosenOptionMsg(option, msgId) {
-    //   const optionIds = [];
-    //   optionIds.push(option);
-    //   console.log('handleChosenOptionMsg msg id:', msgId, ' option:', option);
-    //   this.currentReplyId = optionIds[optionIds.length - 1];
-    //   this.startSendingMessages();
-    //   return this.currentReplyId;
-    // }
   }
-  // Does anything need to be a computed property?
 };
 </script>
 
@@ -102,11 +85,5 @@ export default {
   padding: 10px 5px 10px;
   /* padding: 5px; */
   color: #F4F4F4;
-}
-/* TEMPORARY STYLES FOR TESTING PURPOSES */
-button {
-  cursor: pointer;
-  padding: 2px;
-  background-color: gainsboro;
 }
 </style>

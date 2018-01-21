@@ -4,17 +4,23 @@
       <img v-if="chatMsg.actor == 'other'" src="../assets/acount_circle.svg" class="icon-other" />
       <img v-else src="../assets/face.svg" class="icon-self" />
     </div>
-    <div class="msg">REPLIES... {{ chatMsg.replies[replyId] }}</div>
-  </div>
+    <div class="msg">
+      REPLIES... {{ chatMsg.replies[id_reply] }}</div>
+    </div>
 </template>
 
 <script>
-// I think I need to add some functionality in this component to fix the appropriate replyId to the specific chatMsg id - otherwise ALL reply messages are updated when replyId changes !!!
 
 export default {
   props: ['chatMsg', 'replyId'],
+  data() {
+    return {
+      id_reply: null
+    };
+  },
   created() {
-    console.log('on created replyId is', this.replyId);
+    this.id_reply = this.replyId;
+    console.log('on created chatMsg.id is', this.chatMsg.id, '& replyId is', this.replyId, 'so id_reply is', this.id_reply);
   }
 };
 </script>

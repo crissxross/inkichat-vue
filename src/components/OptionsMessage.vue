@@ -1,11 +1,11 @@
 <template>
   <!-- show options -->
   <div v-if="!choiceMade" :class="chatMsg.actor == 'other' ? otherClass : selfClass">
-    <a class="q-option btn" @click="choose(0, chatMsg.id)">
+    <a class="q-option btn" @click="choose(chatMsg.id, 0)">
       {{chatMsg.options[0].text}}</a>
-    <a class="q-option btn" @click="choose(1, chatMsg.id)">
+    <a class="q-option btn" @click="choose(chatMsg.id, 1)">
       {{chatMsg.options[1].text}}</a>
-    <a class="q-option btn" @click="choose(2, chatMsg.id)">
+    <a class="q-option btn" @click="choose(chatMsg.id, 2)">
       {{chatMsg.options[2].text}}</a>
   </div>
   <!-- show chosen option if choice made -->
@@ -32,12 +32,11 @@ export default {
     };
   },
   methods: {
-    choose(option, msgId) {
+    choose(msgId, option) {
       console.log('OptionsMessage chose:', msgId, option);
       this.choiceMade = true;
       this.chosenOptionId = option;
-      eventBus.$emit('optionChosen', option, msgId);
-      // console.log('choice made:', this.choiceMade, this.chosenOptionId);
+      eventBus.$emit('optionChosen', msgId, option);
     }
   }
 };
