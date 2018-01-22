@@ -19,6 +19,7 @@ export default {
     };
   },
   created() {
+    // store the replyId for this specific reply instance
     this.id_reply = this.replyId;
     console.log('on created chatMsg.id is', this.chatMsg.id, '& replyId is', this.replyId, 'so id_reply is', this.id_reply);
   }
