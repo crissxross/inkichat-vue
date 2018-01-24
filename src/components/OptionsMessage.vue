@@ -1,5 +1,5 @@
 <template>
-  <transition name="slideup-fade" mode="out-in">
+  <transition name="slidey" mode="out-in">
   <!-- show options -->
   <div v-if="!choiceMade" :class="chatMsg.actor == 'other' ? otherClass : selfClass" key="choose">
     <a class="q-option btn" @click="choose(chatMsg.id, 0)">
@@ -129,15 +129,15 @@ a:hover {
 /*   border: 1px solid #666; */
 }
 
-/* ANIMATION - scoped here with faster timings */
-.slideup-fade-enter-active, .slideup-fade-leave-active {
+/* ANIMATION */
+.slidey-enter-active, .slidey-leave-active {
   transition: all .3s;
 }
-.slideup-fade-enter {
+.slidey-enter {
   transform: translateY(5px);
   opacity: 0;
 }
-.slideup-fade-leave-to {
+.slidey-leave-to {
   transform: translateY(-5px);
   opacity: 0;
 }

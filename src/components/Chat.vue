@@ -1,5 +1,5 @@
 <template>
-  <div class="container-grid">
+  <transition-group name="slideup-fade" mode="out-in" class="container-grid">
     <!-- <small style="color: grey">Display from indexes {{ startIndexVis }} to {{ endIndexVis }}</small> -->
     <app-message
       v-for="msg in visibleMessages"
@@ -7,7 +7,7 @@
       :key="msg.id"
       :replyId="latestReplyId">
     </app-message>
-  </div>
+  </transition-group>
 </template>
 
 <script>
@@ -31,7 +31,7 @@ export default {
       startIndexVis: 0,
       endIndexVis: 0,
       sendInterval: null,
-      delay: 2000
+      delay: 1000
       // TODO: dynamically program delay
       // for timing delay see - https://codepen.io/crissxross/pen/MrxGZY?editors=0010
     };
@@ -106,5 +106,21 @@ export default {
   padding: 10px 5px 10px;
   /* padding: 5px; */
   color: #F4F4F4;
+}
+/* ANIMATIONS */
+.slideup-fade-enter-active, .slideup-fade-leave-active {
+  transition: all 1s;
+}
+.slideup-fade-enter {
+  transform: translateY(20px);
+  opacity: 0;
+}
+.slideup-fade-leave-to {
+  transform: translateY(-20px);
+  opacity: 0;
+}
+/* not sure that this one is having any effect !!! */
+.slideup-fade-move {
+  transition: transform 1s;
 }
 </style>

@@ -1,5 +1,4 @@
 <template>
-    <transition name="slideup-fade">
   <div>
     <!-- SAYS -->
     <div v-if="chatMsg.actionType == 'SAYS'" class="message-grid">
@@ -17,7 +16,6 @@
       </app-replies-message>
     </div>
   </div>
-    </transition>
 </template>
 
 <script>
@@ -41,18 +39,6 @@ export default {
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
   grid-row-gap: 10px;
-}
-/* ANIMATIONS - child components can inherit */
-.slideup-fade-enter-active, .slideup-fade-leave-active {
-  transition: all 1s;
-}
-.slideup-fade-enter {
-  transform: translateY(20px);
-  opacity: 0;
-}
-.slideup-fade-leave-to {
-  transform: translateY(-20px);
-  opacity: 0;
 }
 
 </style>
