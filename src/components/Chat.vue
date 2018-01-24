@@ -1,7 +1,8 @@
 <template>
   <div class="container-grid">
+    <!-- <small style="color: grey">Display from indexes {{ startIndexVis }} to {{ endIndexVis }}</small> -->
     <app-message
-      v-for="msg in sentMessages"
+      v-for="msg in visibleMessages"
       :chatMsg="msg"
       :key="msg.id"
       :replyId="latestReplyId">
@@ -20,22 +21,29 @@ export default {
   },
   data() {
     return {
-      chatdata: dialogChatData,
+      chatData: dialogChatData,
       currentMsgId: 0,
       currentMessage: [],
       sentMessages: [],
       latestReplyId: null,
-      messagesOnDisplay: [], // like filtered messages so computed?
-      maxMsgsInView: 6,
-      start: false,
+      start: false, // only using for logging currently
+      maxVisible: 6,
+      startIndexVis: 0,
+      endIndexVis: 0,
       sendInterval: null,
-      delay: 1000
+      delay: 2000
       // TODO: dynamically program delay
       // for timing delay see - https://codepen.io/crissxross/pen/MrxGZY?editors=0010
     };
   },
+  computed: {
+    visibleMessages() {
+      return this.batch(this.sentMessages);
+    }
+  },
   created() {
-    console.log('chatdata.length:', this.chatdata.length);
+    // console.log('chatData.length:', this.chatData.length);
+    this.endIndexVis = this.maxVisible;
     this.startSendingMessages();
     eventBus.$on('optionChosen', (msgId, option) => {
       this.handleChosenOptionMsg(msgId, option);
@@ -49,20 +57,18 @@ export default {
       console.log('start:', this.start);
     },
     sendNextMessage() {
-      if (this.currentMsgId < this.chatdata.length) {
+      if (this.currentMsgId < this.chatData.length) {
         const nextMsgId = this.currentMsgId + 1;
-        this.currentMessage = this.chatdata.slice(this.currentMsgId, nextMsgId);
-        // If MAX NUMBER OF MESSAGES IN VIEW...
-        // maybe simply animate the list upwards so that
-        // the excess earlier messages slide out of view
-        // TRY PAGINATION: see - https://codepen.io/crissxross/pen/NXJaWZ
-        if (this.sentMessages.length === this.maxMsgsInView) {
-          console.log('MAX', this.maxMsgsInView, 'messages in view reached! Sent messages =', this.sentMessages.length);
-        }
+        this.currentMessage = this.chatData.slice(this.currentMsgId, nextMsgId);
         this.currentMsgId++;
         console.log('currentMsgId updated:', this.currentMsgId);
+        // increment start & end index of visible messages to display in batches
+        if (this.sentMessages.length >= this.maxVisible) {
+          this.startIndexVis++;
+          this.endIndexVis++;
+        }
+        // Check for OPTIONS message type
         if (this.currentMessage[0].actionType === 'OPTIONS') {
-          // console.log('OPTIONS msg!');
           this.stopSendingMessages();
           return this.sentMessages.push(this.currentMessage[0]);
         }
@@ -72,10 +78,9 @@ export default {
         this.stopSendingMessages();
       }
     },
-    stopSendingMessages() {
-      clearInterval(this.sendInterval);
-      this.start = false;
-      console.log('start:', this.start);
+    // Display messages in batches of maxVisible size
+    batch(sentMsgs) {
+      return sentMsgs.slice(this.startIndexVis, this.endIndexVis);
     },
     handleChosenOptionMsg(msgId, option) {
       console.log('handleChosenOptionMsg msg id:', msgId, ' option:', option);
@@ -84,8 +89,12 @@ export default {
       }
       this.startSendingMessages();
       return this.latestReplyId;
+    },
+    stopSendingMessages() {
+      clearInterval(this.sendInterval);
+      this.start = false;
+      console.log('start:', this.start);
     }
-    // TODO: PAGINATE sentMessages
   }
 };
 </script>
