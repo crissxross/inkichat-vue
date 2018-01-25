@@ -31,8 +31,9 @@ export default {
       startIndexVis: 0,
       endIndexVis: 0,
       sendInterval: null,
-      delay: 1000
-      // TODO: dynamically program delay
+      delay: 1000,
+      readingTime: 1000
+      // TODO: improve dynamically programmed readingTime delay
       // for timing delay see - https://codepen.io/crissxross/pen/MrxGZY?editors=0010
     };
   },
@@ -52,14 +53,20 @@ export default {
   },
   methods: {
     startSendingMessages() {
-      this.sendInterval = setInterval(this.sendNextMessage, this.delay);
+      this.sendInterval = setInterval(
+        this.sendNextMessage,
+        // this.delay + this.readingTime
+        this.readingTime
+      );
       this.start = true;
-      console.log('start:', this.start);
+      console.log('start:', this.start, 'readingTime:', this.readingTime);
     },
     sendNextMessage() {
+      console.log('sendNextMessage called with readingTime of', this.readingTime);
       if (this.currentMsgId < this.chatData.length) {
         const nextMsgId = this.currentMsgId + 1;
         this.currentMessage = this.chatData.slice(this.currentMsgId, nextMsgId);
+        this.calculateReadingTime();
         this.currentMsgId++;
         console.log('currentMsgId updated:', this.currentMsgId);
         // increment start & end index of visible messages to display in batches
@@ -82,8 +89,26 @@ export default {
     batch(sentMsgs) {
       return sentMsgs.slice(this.startIndexVis, this.endIndexVis);
     },
+    // should calculateReadingTime be a COMPUTED PROPERTY ???
+    // FIX calculateReadingTime is producing delays which are OUT OF SYNC !!!
+    // Need to test for OPTION message too because no need to delay then
+    calculateReadingTime() {
+      // How how long is currentMessage - number of words or string length?
+      if (this.currentMessage[0].actionType === 'SAYS') {
+        console.log('Length of SAYS id', this.currentMsgId, 'is', this.currentMessage[0].text.length);
+        this.readingTime = this.currentMessage[0].text.length * 100;
+        console.log('calculateReadingTime from SAYS gives', this.readingTime);
+        return this.readingTime;
+      }
+      if (this.currentMessage[0].actionType === 'REPLIES') {
+        console.log('Length of REPLIES id', this.currentMsgId, 'is', this.currentMessage[0].replies[this.latestReplyId].length);
+        this.readingTime = this.currentMessage[0].replies[this.latestReplyId].length * 100;
+        console.log('calculateReadingTime from REPLIES gives', this.readingTime);
+        return this.readingTime;
+      }
+    },
     handleChosenOptionMsg(msgId, option) {
-      console.log('handleChosenOptionMsg msg id:', msgId, ' option:', option);
+      // console.log('handleChosenOptionMsg msg id:', msgId, ' option:', option);
       if (this.currentMsgId === msgId) {
         this.latestReplyId = option;
       }

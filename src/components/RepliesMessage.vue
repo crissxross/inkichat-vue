@@ -22,6 +22,7 @@ export default {
     // store the replyId for this specific reply instance
     this.id_reply = this.replyId;
     console.log('on created chatMsg.id is', this.chatMsg.id, '& replyId is', this.replyId, 'so id_reply is', this.id_reply);
+    // console.log('on created REPLIES chatMsg', this.chatMsg.id, 'length is', this.chatMsg.replies[this.id_reply].length);
   }
 };
 </script>

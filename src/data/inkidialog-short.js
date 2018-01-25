@@ -10,7 +10,8 @@ export const dialogChatData = [
     id: 2,
     actor: 'girl',
     actionType: 'SAYS',
-    text: 'no I’m grounded'
+    // text: 'no I’m grounded'
+    text: 'no'
   },
   {
     id: 3,
@@ -51,7 +52,8 @@ export const dialogChatData = [
     id: 6,
     actor: 'girl',
     actionType: 'SAYS',
-    text: 'Yeah. So mean, they took away my mobile, restricted internet to exam revision. Boring!'
+    // text: 'Yeah. So mean, they took away my mobile, restricted internet to exam revision. Boring!'
+    text: 'Yeah'
   },
   {
     id: 7,
