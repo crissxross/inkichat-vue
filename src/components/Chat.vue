@@ -27,7 +27,7 @@ export default {
       sentMessages: [],
       latestReplyId: null,
       start: false, // only using for logging currently
-      maxVisible: 4, // 6,
+      maxVisible: 6,
       startIndexVis: 0,
       endIndexVis: 0,
       sendInterval: null,
@@ -100,23 +100,29 @@ export default {
 </script>
 
 <style scoped>
+/* NOTE: from VUE docs:
+  "Vue is using an animation technique called FLIP to smoothly transition elements from their old position to their new position using transforms."
+  But for my grid layout, these FLIP transitions will only work with elements placed in a FLEX context.
+*/
 .container-grid {
-  display: grid;
-  grid-row-gap: 10px;
+  /* display: grid;
+  grid-row-gap: 10px; */
+  display: flex;
+  flex-direction: column;
   padding: 10px 5px 10px;
   /* padding: 5px; */
   color: #F4F4F4;
 }
 /* ANIMATIONS */
 .slideup-enter {
-  transform: translateY(20px);
+  transform: translateY(40px);
   opacity: 0;
 }
 .slideup-enter-active {
-  transition: all 1s;
+  transition: all 1s .2s;
 }
 .slideup-leave-active {
-  transition: all 1s;
+  transition: all .75s;
   position: absolute;
   /* NOTE: ^ position: absolute makes sure that other elements may move above this element while it's still being animated, i.e. before it's removed from DOM */
 }
@@ -125,8 +131,6 @@ export default {
   opacity: 0;
 }
 .slideup-move {
-  transition: transform 1s;
+  transition: transform 1s ease-out;
 }
-/* NOTE: maybe I need to use JAVASCRIPT HOOK/s to fix abrupt disappearance of element leaving ??? */
-/* NOTE2: maybe all the elements should animate up to top of container before the leaving element is removed from DOM so that it's already out of view ??? */
 </style>

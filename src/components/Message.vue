@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <!-- SAYS -->
     <div v-if="chatMsg.actionType == 'SAYS'" class="message-grid">
       <app-says-message :chatMsg="chatMsg"></app-says-message>
@@ -34,6 +34,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+/* container needed for FLEX context - see NOTE in Chat.vue */
+.container {
+  margin: 5px 0;
+}
 .message-grid {
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
