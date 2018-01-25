@@ -34,11 +34,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .message-grid {
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
   grid-row-gap: 10px;
 }
-
 </style>
