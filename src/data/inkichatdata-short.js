@@ -1,5 +1,5 @@
 
-export const dialogChatData = [
+export const chatData = [
   {
     id: 1,
     actor: 'other',

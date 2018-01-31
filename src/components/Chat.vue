@@ -14,7 +14,7 @@
 // TODO: improve dynamically programmed readingTime delay
 // for timing delay see - https://codepen.io/crissxross/pen/MrxGZY?editors=0010
 import Message from './Message';
-import { dialogChatData } from '../data/inkidialog-short';
+import { chatData } from '../data/inkichatdata-short'; // eventBus way
 import { eventBus } from '../event-bus';
 
 export default {
@@ -23,7 +23,7 @@ export default {
   },
   data() {
     return {
-      chatData: dialogChatData,
+      chatData: chatData, // eventBus way
       currentMsgId: 0,
       currentMessage: [],
       sentMessages: [],
@@ -38,18 +38,25 @@ export default {
     };
   },
   computed: {
+    // VUEX !!! - chatData is not consumed directly by the view, it needs to be transformed into sentMessages by an action &/or mutation, then transformed into visibleMessages, then consumed by view !!!
+    // chatData() {
+    //   return this.$store.getters.chatData; // INCORRECT !!!
+    // },
     visibleMessages() {
       return this.batch(this.sentMessages);
     }
   },
-  // FIX - calculating reading time is OUT OF SYNC - maybe should be a computed property or use VUEX state management instead !!!
+  // Use VUEX state management instead !!!
   created() {
-    // console.log('chatData.length:', this.chatData.length);
+    // VUEX NOTE: see shopping-cart app in examples
+    // so maybe need something like:
+    // this.$store.dispatch('getAllChatData');
+    console.log('chatData.length:', this.chatData.length);
+    // console.log('chatData:', this.chatData);
     this.endIndexVis = this.maxVisible;
     this.startSendingMessages();
     eventBus.$on('optionChosen', (msgId, option) => {
       this.handleChosenOptionMsg(msgId, option);
-      // this.startSendingMessages();
     });
     eventBus.$on('readingTime', readingTime => {
       this.calculateReadingTime(readingTime);
@@ -62,7 +69,7 @@ export default {
       //   this.calculateReadingTime(1);
       // }
       this.start = true;
-      console.log('start:', this.start, 'readingTime:', this.readingTime);
+      // console.log('start:', this.start, 'readingTime:', this.readingTime);
       this.sendInterval = setInterval(
         this.sendNextMessage,
         // this.delay + this.readingTime
@@ -70,13 +77,14 @@ export default {
       );
     },
     sendNextMessage() {
-      console.log('sendNextMessage called with readingTime of', this.readingTime);
+      // console.log('sendNextMessage called with readingTime of', this.readingTime);
       if (this.currentMsgId < this.chatData.length) {
         const nextMsgId = this.currentMsgId + 1;
         this.currentMessage = this.chatData.slice(this.currentMsgId, nextMsgId);
         // this.calculateReadingTime();
         this.currentMsgId++;
-        console.log('currentMsgId updated:', this.currentMsgId);
+        // console.log('currentMsgId updated:', this.currentMsgId);
+
         // increment start & end index of visible messages to display in batches
         if (this.sentMessages.length >= this.maxVisible) {
           this.startIndexVis++;
@@ -114,7 +122,7 @@ export default {
     stopSendingMessages() {
       clearInterval(this.sendInterval);
       this.start = false;
-      console.log('start:', this.start);
+      // console.log('start:', this.start);
     }
   }
 };

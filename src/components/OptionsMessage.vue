@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     choose(msgId, option) {
-      console.log('OptionsMessage id', msgId, 'chose:', option);
+      // console.log('OptionsMessage id', msgId, 'chose:', option);
       this.choiceMade = true;
       this.chosenOptionId = option;
       eventBus.$emit('optionChosen', msgId, option);

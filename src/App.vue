@@ -11,6 +11,9 @@ export default {
   name: 'App',
   components: {
     appChat: Chat
+  },
+  created() {
+    this.$store.dispatch('initChatData'); // ???
   }
 };
 </script>
