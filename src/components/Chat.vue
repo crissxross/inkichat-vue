@@ -14,16 +14,17 @@
 // TODO: improve dynamically programmed readingTime delay
 // for timing delay see - https://codepen.io/crissxross/pen/MrxGZY?editors=0010
 import Message from './Message';
-import { dialogChatData } from '../data/inkidialog-short';
+import { ChatData } from '../data/inkichatdata-short';
 import { eventBus } from '../event-bus';
 
 export default {
   components: {
     appMessage: Message
   },
+  // NOTE: chatData is CONSTANT, its data never changes
   data() {
     return {
-      chatData: dialogChatData,
+      chatData: ChatData,
       currentMsgId: 0,
       currentMessage: [],
       sentMessages: [],
