@@ -33,7 +33,6 @@ export default {
       maxVisible: 6,
       startIndexVis: 0,
       endIndexVis: 0,
-      sendInterval: null,
       delayOffset: 50,
       readingTime: 0
     };
@@ -55,46 +54,50 @@ export default {
       this.calculateReadingTime(readingQuantity);
     });
   },
+  // Now using ASYNC/AWAIT & recursive sendMessages method
   methods: {
     startSendingMessages() {
       this.start = true;
-      console.log('start:', this.start, 'readingTime:', this.readingTime);
-      // Should it be a combination of SetTIMEOUT & PROMISE, ASYNC etc. ???
-      // setTimeout(this.sendNextMessage, this.readingTime);
-      if (this.currentMsgId < this.chatData.length) {
-        // DO NOT USE sendInterval !!!
-        this.sendInterval = setInterval(this.sendNextMessage, 1000);
-      } else {
-        console.log('NO MORE MESSAGES TO SEND!');
-        // this.stopSendingMessages();
-        // OR simply:
-        // this.start = false;
+      console.log('startSendingMessages: start', this.start, 'readingTime:', this.readingTime);
+      this.sendMessages();
+    },
+    stopSendingMessages() {
+      this.start = false;
+      console.log(this.start, 'so stop!');
+    },
+    // TODO: make ms for delay dynamic depending on readingTime
+    delay(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    },
+    async sendMessages() {
+      if (this.start) {
+        if (this.currentMsgId < this.chatData.length) {
+          const nextMsgId = this.currentMsgId + 1;
+          await this.sendNextMessage(nextMsgId);
+          this.sendMessages();
+        } else {
+          console.log('NO MORE messages to send!');
+          this.stopSendingMessages();
+        }
       }
     },
-    sendNextMessage() {
-      console.log('sendNextMessage called, and readingTime is', this.readingTime);
-      if (this.currentMsgId < this.chatData.length) {
-        const nextMsgId = this.currentMsgId + 1;
-        this.currentMessage = this.chatData.slice(this.currentMsgId, nextMsgId);
-        this.currentMsgId++;
-        console.log('currentMsgId updated:', this.currentMsgId);
-        // increment start & end index of visible messages to display in batches
-        if (this.sentMessages.length >= this.maxVisible) {
-          this.startIndexVis++;
-          this.endIndexVis++;
-        }
-        // Check for OPTIONS message type
-        if (this.currentMessage[0].actionType === 'OPTIONS') {
-          this.stopSendingMessages();
-          return this.sentMessages.push(this.currentMessage[0]);
-        }
-        return this.sentMessages.push(this.currentMessage[0]);
-      } else {
-        console.log('sendNextMessage says - No more messages to send!');
-        this.stopSendingMessages();
-        // OR simply:
-        // this.start = false;
+    async sendNextMessage(nextMsgId) {
+      // console.log('sendNextMessage called, and readingTime is', this.readingTime);
+      this.currentMessage = this.chatData.slice(this.currentMsgId, nextMsgId);
+      this.currentMsgId++;
+      console.log('currentMsgId updated:', this.currentMsgId);
+      await this.delay(1000);
+      // increment start & end index of visible messages to display in batches
+      if (this.sentMessages.length >= this.maxVisible) {
+        this.startIndexVis++;
+        this.endIndexVis++;
       }
+      // Check for OPTIONS message type
+      if (this.currentMessage[0].actionType === 'OPTIONS') {
+        this.stopSendingMessages();
+        return this.sentMessages.push(this.currentMessage[0]);
+      }
+      return this.sentMessages.push(this.currentMessage[0]);
     },
     // Display messages in batches of maxVisible size
     batch(sentMsgs) {
@@ -113,12 +116,6 @@ export default {
       }
       this.startSendingMessages();
       return this.latestReplyId;
-    },
-    stopSendingMessages() {
-      this.start = false;
-      console.log('start:', this.start);
-      // DO NOT USE setInterval !!!
-      clearInterval(this.sendInterval);
     }
   }
 };
