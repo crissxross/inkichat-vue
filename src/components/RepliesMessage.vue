@@ -25,8 +25,8 @@ export default {
     console.log('on created chatMsg.id is', this.chatMsg.id, '& id_reply is', this.id_reply);
     // for calculating reading time
     console.log('on created REPLIES chatMsg.id', this.chatMsg.id, 'length is', this.chatMsg.replies[this.id_reply].length);
-    const replyReadingTime = this.chatMsg.replies[this.id_reply].length;
-    eventBus.$emit('readingTime', replyReadingTime);
+    const replyQuantity = this.chatMsg.replies[this.id_reply].length;
+    eventBus.$emit('readingQuantity', replyQuantity);
   }
 };
 </script>

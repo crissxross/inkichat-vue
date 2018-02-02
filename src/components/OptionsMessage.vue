@@ -39,7 +39,7 @@ export default {
       this.choiceMade = true;
       this.chosenOptionId = option;
       eventBus.$emit('optionChosen', msgId, option);
-      eventBus.$emit('readingTime', 1);
+      eventBus.$emit('readingQuantity', 1);
     }
   }
 };

@@ -43,39 +43,39 @@ export default {
       return this.batch(this.sentMessages);
     }
   },
-  // FIX - calculating reading time is OUT OF SYNC - maybe should be a computed property or use VUEX state management instead !!!
   created() {
     // console.log('chatData.length:', this.chatData.length);
     this.endIndexVis = this.maxVisible;
     this.startSendingMessages();
     eventBus.$on('optionChosen', (msgId, option) => {
       this.handleChosenOptionMsg(msgId, option);
-      // this.startSendingMessages();
     });
-    eventBus.$on('readingTime', readingTime => {
-      this.calculateReadingTime(readingTime);
+    eventBus.$on('readingQuantity', readingQuantity => {
+      console.log('eventBus.$on receives readingQuantity value:', readingQuantity);
+      this.calculateReadingTime(readingQuantity);
     });
   },
   methods: {
     startSendingMessages() {
-      // if (!this.start) {
-      //   console.log(this.start);
-      //   this.calculateReadingTime(1);
-      // }
       this.start = true;
       console.log('start:', this.start, 'readingTime:', this.readingTime);
-      this.sendInterval = setInterval(
-        this.sendNextMessage,
-        // this.delay + this.readingTime
-        this.readingTime
-      );
+      // Should it be a combination of SetTIMEOUT & PROMISE, ASYNC etc. ???
+      // setTimeout(this.sendNextMessage, this.readingTime);
+      if (this.currentMsgId < this.chatData.length) {
+        // DO NOT USE sendInterval !!!
+        this.sendInterval = setInterval(this.sendNextMessage, 1000);
+      } else {
+        console.log('NO MORE MESSAGES TO SEND!');
+        // this.stopSendingMessages();
+        // OR simply:
+        // this.start = false;
+      }
     },
     sendNextMessage() {
-      console.log('sendNextMessage called with readingTime of', this.readingTime);
+      console.log('sendNextMessage called, and readingTime is', this.readingTime);
       if (this.currentMsgId < this.chatData.length) {
         const nextMsgId = this.currentMsgId + 1;
         this.currentMessage = this.chatData.slice(this.currentMsgId, nextMsgId);
-        // this.calculateReadingTime();
         this.currentMsgId++;
         console.log('currentMsgId updated:', this.currentMsgId);
         // increment start & end index of visible messages to display in batches
@@ -90,18 +90,20 @@ export default {
         }
         return this.sentMessages.push(this.currentMessage[0]);
       } else {
-        console.log('No more messages to send!');
+        console.log('sendNextMessage says - No more messages to send!');
         this.stopSendingMessages();
+        // OR simply:
+        // this.start = false;
       }
     },
     // Display messages in batches of maxVisible size
     batch(sentMsgs) {
       return sentMsgs.slice(this.startIndexVis, this.endIndexVis);
     },
-    // FIX - calculateReadingTime is producing delays which are OUT OF SYNC !!! Should it be a computed property ???
-    calculateReadingTime(timing) {
-      this.readingTime = timing * this.delayOffset;
-      console.log('calculateReadingTime from timing argument is', this.readingTime);
+    // TODO: improve calculateReadingTime algorythm
+    calculateReadingTime(quantity) {
+      this.readingTime = quantity * this.delayOffset;
+      console.log('calculateReadingTime from quantity *', this.delayOffset, 'delayOffset is', this.readingTime);
       return this.readingTime;
     },
     handleChosenOptionMsg(msgId, option) {
@@ -113,9 +115,10 @@ export default {
       return this.latestReplyId;
     },
     stopSendingMessages() {
-      clearInterval(this.sendInterval);
       this.start = false;
       console.log('start:', this.start);
+      // DO NOT USE setInterval !!!
+      clearInterval(this.sendInterval);
     }
   }
 };

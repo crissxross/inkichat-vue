@@ -16,8 +16,8 @@ export default {
   created() {
     // for calculating reading time
     console.log('on created SAYS chatMsg.id', this.chatMsg.id, 'length is', this.chatMsg.text.length);
-    const saysReadingTime = this.chatMsg.text.length;
-    eventBus.$emit('readingTime', saysReadingTime);
+    const saysQuantity = this.chatMsg.text.length;
+    eventBus.$emit('readingQuantity', saysQuantity);
   }
 };
 </script>
