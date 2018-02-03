@@ -14,10 +14,10 @@ import { eventBus } from '../event-bus';
 export default {
   props: ['chatMsg'],
   created() {
-    // for calculating reading time
-    console.log('on created SAYS chatMsg.id', this.chatMsg.id, 'length is', this.chatMsg.text.length);
-    const saysQuantity = this.chatMsg.text.length;
-    eventBus.$emit('readingQuantity', saysQuantity);
+    // for calculating reading time - how many words
+    const saysNumOfWords = this.chatMsg.text.split(/\s/g).length;
+    console.log('on created SAYS chatMsg.id', this.chatMsg.id, 'num of words is', saysNumOfWords);
+    eventBus.$emit('numOfWordsToRead', saysNumOfWords);
   }
 };
 </script>

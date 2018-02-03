@@ -33,13 +33,18 @@ export default {
       choiceMade: false // is this necessary?
     };
   },
+  created() {
+    console.log('OptionsMessage created & emits a fixed numOfWordsToRead!');
+    // sometimes msg jumps when less than 3 (& more than 0) which is probably to do with animation transition timing
+    eventBus.$emit('numOfWordsToRead', 3);
+  },
   methods: {
     choose(msgId, option) {
       console.log('OptionsMessage id', msgId, 'chose:', option);
       this.choiceMade = true;
       this.chosenOptionId = option;
       eventBus.$emit('optionChosen', msgId, option);
-      eventBus.$emit('readingQuantity', 1);
+      // eventBus.$emit('numOfWordsToRead', 0);
     }
   }
 };

@@ -22,11 +22,10 @@ export default {
   created() {
     // store the replyId for this specific reply instance
     this.id_reply = this.replyId;
-    console.log('on created chatMsg.id is', this.chatMsg.id, '& id_reply is', this.id_reply);
-    // for calculating reading time
-    console.log('on created REPLIES chatMsg.id', this.chatMsg.id, 'length is', this.chatMsg.replies[this.id_reply].length);
-    const replyQuantity = this.chatMsg.replies[this.id_reply].length;
-    eventBus.$emit('readingQuantity', replyQuantity);
+    // for calculating reading time - how many words
+    const replyNumOfWords = this.chatMsg.replies[this.id_reply].split(/\s/g).length;
+    console.log('on created REPLIES chatMsg.id', this.chatMsg.id, '& id_reply is', this.id_reply, '& num of words is', replyNumOfWords);
+    eventBus.$emit('numOfWordsToRead', replyNumOfWords);
   }
 };
 </script>

@@ -1,6 +1,5 @@
 <template>
   <transition-group name="slideup" mode="out-in" class="container-grid">
-    <!-- <small style="color: grey">Display from indexes {{ startIndexVis }} to {{ endIndexVis }}</small> -->
     <app-message
       v-for="msg in visibleMessages"
       :chatMsg="msg"
@@ -11,8 +10,6 @@
 </template>
 
 <script>
-// TODO: improve dynamically programmed readingTime delay
-// for timing delay see - https://codepen.io/crissxross/pen/MrxGZY?editors=0010
 import Message from './Message';
 import { ChatData } from '../data/inkichatdata-short';
 import { eventBus } from '../event-bus';
@@ -29,13 +26,15 @@ export default {
       currentMessage: [],
       sentMessages: [],
       latestReplyId: null,
-      start: false, // only using for logging currently
+      start: false,
       maxVisible: 6,
       startIndexVis: 0,
       endIndexVis: 0,
       delayOffset: 50,
-      readingTime: 0
+      readingTime: 0,
+      wordsPerSecond: 3.3 // 200 words per min / 60 secs
     };
+    // Note: average reading time is 200 words per minute
   },
   computed: {
     visibleMessages() {
@@ -47,25 +46,25 @@ export default {
     this.endIndexVis = this.maxVisible;
     this.startSendingMessages();
     eventBus.$on('optionChosen', (msgId, option) => {
+      console.log('eventBus.$on receives optionChosen:', msgId, option);
       this.handleChosenOptionMsg(msgId, option);
     });
-    eventBus.$on('readingQuantity', readingQuantity => {
-      console.log('eventBus.$on receives readingQuantity value:', readingQuantity);
-      this.calculateReadingTime(readingQuantity);
+    eventBus.$on('numOfWordsToRead', numOfWordsToRead => {
+      console.log('eventBus.$on receives', numOfWordsToRead, 'numOfWordsToRead & calls calculateReadingTime');
+      this.calculateReadingTime(numOfWordsToRead);
     });
   },
   // Now using ASYNC/AWAIT & recursive sendMessages method
   methods: {
     startSendingMessages() {
       this.start = true;
-      console.log('startSendingMessages: start', this.start, 'readingTime:', this.readingTime);
+      console.log('startSendingMessages: start', this.start, 'current readingTime:', this.readingTime);
       this.sendMessages();
     },
     stopSendingMessages() {
       this.start = false;
       console.log(this.start, 'so stop!');
     },
-    // TODO: make ms for delay dynamic depending on readingTime
     delay(ms) {
       return new Promise((resolve) => setTimeout(resolve, ms));
     },
@@ -82,11 +81,12 @@ export default {
       }
     },
     async sendNextMessage(nextMsgId) {
-      // console.log('sendNextMessage called, and readingTime is', this.readingTime);
+      // console.log('sendNextMessage called, currentMsgId:', this.currentMsgId);
+      // console.log('sendNextMessage, nextMsgId:', nextMsgId, 'after AWAIT delay for readingTime:', this.readingTime);
+      await this.delay(this.readingTime);
       this.currentMessage = this.chatData.slice(this.currentMsgId, nextMsgId);
       this.currentMsgId++;
-      console.log('currentMsgId updated:', this.currentMsgId);
-      await this.delay(1000);
+      // console.log('currentMsgId updated:', this.currentMsgId);
       // increment start & end index of visible messages to display in batches
       if (this.sentMessages.length >= this.maxVisible) {
         this.startIndexVis++;
@@ -103,20 +103,22 @@ export default {
     batch(sentMsgs) {
       return sentMsgs.slice(this.startIndexVis, this.endIndexVis);
     },
-    // TODO: improve calculateReadingTime algorythm
-    calculateReadingTime(quantity) {
-      this.readingTime = quantity * this.delayOffset;
-      console.log('calculateReadingTime from quantity *', this.delayOffset, 'delayOffset is', this.readingTime);
-      return this.readingTime;
-    },
     handleChosenOptionMsg(msgId, option) {
-      // console.log('handleChosenOptionMsg msg id:', msgId, ' option:', option);
+      console.log('handleChosenOptionMsg msg id:', msgId, ' option:', option);
       if (this.currentMsgId === msgId) {
         this.latestReplyId = option;
       }
       this.startSendingMessages();
       return this.latestReplyId;
+    },
+    // Using number of words to dynamically determine reading time
+    calculateReadingTime(numOfWords) {
+      this.readingTime = Math.round((numOfWords / this.wordsPerSecond) * 1000);
+      console.log('calculateReadingTime from numOfWords', numOfWords + '/' + this.wordsPerSecond, '* 1000ms =', this.readingTime);
+      return this.readingTime;
     }
+    // NOTE: for an alternative dynamic reading time algorithm delay see - https://codepen.io/crissxross/pen/MrxGZY?editors=0010
+
   }
 };
 </script>
