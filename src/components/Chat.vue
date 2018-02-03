@@ -27,7 +27,7 @@ export default {
       sentMessages: [],
       latestReplyId: null,
       start: false,
-      maxVisible: 6,
+      maxVisible: 4,
       startIndexVis: 0,
       endIndexVis: 0,
       delayOffset: 50,
@@ -113,12 +113,14 @@ export default {
     },
     // Using number of words to dynamically determine reading time
     calculateReadingTime(numOfWords) {
-      this.readingTime = Math.round((numOfWords / this.wordsPerSecond) * 1000);
-      console.log('calculateReadingTime from numOfWords', numOfWords + '/' + this.wordsPerSecond, '* 1000ms =', this.readingTime);
+      // do the actual calculation but...
+      let calcTime = Math.round((numOfWords / this.wordsPerSecond) * 1000);
+      // allow for a minimum reading time for very short msgs - e.g. 500?
+      this.readingTime = calcTime > 500 ? calcTime : 500;
+      console.log('calculateReadingTime from numOfWords', numOfWords + '/' + this.wordsPerSecond, '* 1000ms =', calcTime, 'same as ??', this.readingTime);
       return this.readingTime;
     }
     // NOTE: for an alternative dynamic reading time algorithm delay see - https://codepen.io/crissxross/pen/MrxGZY?editors=0010
-
   }
 };
 </script>
