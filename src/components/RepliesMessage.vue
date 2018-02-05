@@ -22,7 +22,7 @@ export default {
   created() {
     // store the replyId for this specific reply instance
     this.id_reply = this.replyId;
-    // for calculating reading time - how many words
+    // for calculating reading time based on how many words
     const replyNumOfWords = this.chatMsg.replies[this.id_reply].split(/\s/g).length;
     console.log('on created REPLIES chatMsg.id', this.chatMsg.id, '& id_reply is', this.id_reply, '& num of words is', replyNumOfWords);
     eventBus.$emit('numOfWordsToRead', replyNumOfWords);

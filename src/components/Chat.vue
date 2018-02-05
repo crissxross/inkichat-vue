@@ -30,7 +30,7 @@ export default {
       maxVisible: 4,
       startIndexVis: 0,
       endIndexVis: 0,
-      delayOffset: 50,
+      msgLag: 200, // pause before msg appears
       readingTime: 0,
       wordsPerSecond: 3.3 // 200 words per min / 60 secs
     };
@@ -50,7 +50,7 @@ export default {
       this.handleChosenOptionMsg(msgId, option);
     });
     eventBus.$on('numOfWordsToRead', numOfWordsToRead => {
-      console.log('eventBus.$on receives', numOfWordsToRead, 'numOfWordsToRead & calls calculateReadingTime');
+      console.log('eventBus.$on receives', numOfWordsToRead, 'numOfWordsToRead');
       this.calculateReadingTime(numOfWordsToRead);
     });
   },
@@ -113,11 +113,12 @@ export default {
     },
     // Using number of words to dynamically determine reading time
     calculateReadingTime(numOfWords) {
-      // do the actual calculation but...
-      let calcTime = Math.round((numOfWords / this.wordsPerSecond) * 1000);
-      // allow for a minimum reading time for very short msgs - e.g. 500?
-      this.readingTime = calcTime > 500 ? calcTime : 500;
-      console.log('calculateReadingTime from numOfWords', numOfWords + '/' + this.wordsPerSecond, '* 1000ms =', calcTime, 'same as ??', this.readingTime);
+      // minimum reading time for very short msgs
+      let minTime = 800;
+      // calculation to get base milliseconds...
+      let baseTime = Math.round((numOfWords / this.wordsPerSecond) * 1000);
+      this.readingTime = (baseTime > minTime ? baseTime : minTime) + this.msgLag;
+      console.log('calculateReadingTime from numOfWords', numOfWords + '/' + this.wordsPerSecond, '* 1000ms =', baseTime, 'same as ??', this.readingTime);
       return this.readingTime;
     }
     // NOTE: for an alternative dynamic reading time algorithm delay see - https://codepen.io/crissxross/pen/MrxGZY?editors=0010

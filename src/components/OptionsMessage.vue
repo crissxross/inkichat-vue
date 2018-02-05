@@ -35,7 +35,7 @@ export default {
   },
   created() {
     console.log('OptionsMessage created & emits a fixed numOfWordsToRead!');
-    // sometimes msg jumps when less than 3 (& more than 0) which is probably to do with animation transition timing
+    // emit numOfWordsToRead here to allow time for animation transition so that the msg speech bubble doesn't jump up
     eventBus.$emit('numOfWordsToRead', 3);
   },
   methods: {

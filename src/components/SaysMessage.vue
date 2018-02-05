@@ -14,7 +14,7 @@ import { eventBus } from '../event-bus';
 export default {
   props: ['chatMsg'],
   created() {
-    // for calculating reading time - how many words
+    // for calculating reading time based on how many words
     const saysNumOfWords = this.chatMsg.text.split(/\s/g).length;
     console.log('on created SAYS chatMsg.id', this.chatMsg.id, 'num of words is', saysNumOfWords);
     eventBus.$emit('numOfWordsToRead', saysNumOfWords);
