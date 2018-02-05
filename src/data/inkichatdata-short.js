@@ -1,4 +1,4 @@
-
+// truncated chat text for development use or testing
 export const ChatData = [
   {
     id: 1,
@@ -42,9 +42,9 @@ export const ChatData = [
     actor: 'other',
     actionType: 'REPLIES',
     replies: [
-      'omg [0] omg omg omg omg omg omg omg omg omg omg omg omg omg ',
-      'sad [1]',
-      'haha [2]'
+      'omg',
+      'sad',
+      'haha'
     ]
   },
   {
@@ -107,27 +107,31 @@ export const ChatData = [
     actor: 'other',
     actionType: 'REPLIES',
     replies: [
-      'ha ha only kidding [0]',
-      'False modesty don\'t work on me, babe. [1]',
-      'Don\'t get clever, it doesn\'t suit you. [2]'
+      'ha ha only kidding',
+      'False modesty don\'t work on me, babe.',
+      'Don\'t get clever, it doesn\'t suit you.'
     ]
   },
   {
     id: 14,
     actor: 'girl',
     actionType: 'SAYS',
-    text: 'if you think I\'m showing off, I\'m not'
+    text: 'if you think I\'m showing off, I\'m not',
+    pause: 3000
+    // pauses come after own id text, i.e. pause before next id msg
   },
   {
     id: 15,
     actor: 'girl',
     actionType: 'SAYS',
-    text: 'Beccy?'
+    text: 'Beccy?',
+    pause: 4000
   },
   {
     id: 16,
     actor: 'girl',
     actionType: 'SAYS',
-    text: 'Becs?'
+    text: 'Becs?',
+    pause: 3000
   }
 ];

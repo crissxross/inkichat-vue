@@ -5,7 +5,7 @@
       <img v-else src="../assets/face.svg" class="icon-self" />
     </div>
     <div class="msg">
-      REPLIES... {{ chatMsg.replies[id_reply] }}</div>
+      {{ chatMsg.replies[id_reply] }}</div>
     </div>
 </template>
 
@@ -24,8 +24,8 @@ export default {
     this.id_reply = this.replyId;
     // for calculating reading time based on how many words
     const replyNumOfWords = this.chatMsg.replies[this.id_reply].split(/\s/g).length;
-    console.log('on created REPLIES chatMsg.id', this.chatMsg.id, '& id_reply is', this.id_reply, '& num of words is', replyNumOfWords);
     eventBus.$emit('numOfWordsToRead', replyNumOfWords);
+    // console.log('on created REPLIES chatMsg.id', this.chatMsg.id, '& id_reply is', this.id_reply, '& num of words is', replyNumOfWords);
   }
 };
 </script>
@@ -82,7 +82,6 @@ export default {
 
 .icon {
   text-align: center;
-/*   border: 1px solid #666; */
 }
 
 </style>

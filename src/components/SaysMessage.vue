@@ -16,8 +16,9 @@ export default {
   created() {
     // for calculating reading time based on how many words
     const saysNumOfWords = this.chatMsg.text.split(/\s/g).length;
-    console.log('on created SAYS chatMsg.id', this.chatMsg.id, 'num of words is', saysNumOfWords);
-    eventBus.$emit('numOfWordsToRead', saysNumOfWords);
+    const dramaPause = this.chatMsg.pause ? this.chatMsg.pause : 0;
+    eventBus.$emit('numOfWordsToRead', saysNumOfWords, dramaPause);
+    // console.log('on created SAYS chatMsg.id', this.chatMsg.id, 'num of words is', saysNumOfWords);
   }
 };
 </script>
@@ -75,7 +76,6 @@ export default {
 
 .icon {
   text-align: center;
-/*   border: 1px solid #666; */
 }
 
 </style>

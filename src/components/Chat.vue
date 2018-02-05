@@ -18,7 +18,7 @@ export default {
   components: {
     appMessage: Message
   },
-  // NOTE: chatData is CONSTANT, its data never changes
+  // Note: chatData is CONSTANT, its data never changes
   data() {
     return {
       chatData: ChatData,
@@ -27,10 +27,9 @@ export default {
       sentMessages: [],
       latestReplyId: null,
       start: false,
-      maxVisible: 4,
+      maxVisible: 8, // max visible messages
       startIndexVis: 0,
       endIndexVis: 0,
-      msgLag: 200, // pause before msg appears
       readingTime: 0,
       wordsPerSecond: 3.3 // 200 words per min / 60 secs
     };
@@ -46,19 +45,19 @@ export default {
     this.endIndexVis = this.maxVisible;
     this.startSendingMessages();
     eventBus.$on('optionChosen', (msgId, option) => {
-      console.log('eventBus.$on receives optionChosen:', msgId, option);
       this.handleChosenOptionMsg(msgId, option);
+      // console.log('eventBus.$on receives optionChosen:', msgId, option);
     });
-    eventBus.$on('numOfWordsToRead', numOfWordsToRead => {
-      console.log('eventBus.$on receives', numOfWordsToRead, 'numOfWordsToRead');
-      this.calculateReadingTime(numOfWordsToRead);
+    eventBus.$on('numOfWordsToRead', (numOfWordsToRead, dramaPause = 0) => {
+      this.calculateReadingTime(numOfWordsToRead, dramaPause);
+      // console.log('eventBus.$on receives', numOfWordsToRead, 'numOfWordsToRead & dramaPause', dramaPause);
     });
   },
   // Now using ASYNC/AWAIT & recursive sendMessages method
   methods: {
     startSendingMessages() {
       this.start = true;
-      console.log('startSendingMessages: start', this.start, 'current readingTime:', this.readingTime);
+      // console.log('startSendingMessages: start', this.start, 'current readingTime:', this.readingTime);
       this.sendMessages();
     },
     stopSendingMessages() {
@@ -112,13 +111,16 @@ export default {
       return this.latestReplyId;
     },
     // Using number of words to dynamically determine reading time
-    calculateReadingTime(numOfWords) {
+    calculateReadingTime(numOfWords, dramaPause) {
       // minimum reading time for very short msgs
       let minTime = 800;
+      // default time lag between messages
+      let msgLag = 200;
+      let lagTime = msgLag + dramaPause;
       // calculation to get base milliseconds...
       let baseTime = Math.round((numOfWords / this.wordsPerSecond) * 1000);
-      this.readingTime = (baseTime > minTime ? baseTime : minTime) + this.msgLag;
-      console.log('calculateReadingTime from numOfWords', numOfWords + '/' + this.wordsPerSecond, '* 1000ms =', baseTime, 'same as ??', this.readingTime);
+      this.readingTime = (baseTime > minTime ? baseTime : minTime) + lagTime;
+      // console.log('calculateReadingTime from numOfWords', numOfWords + '/' + this.wordsPerSecond, '* 1000ms =', baseTime, '+ lagTime', lagTime, '= readingTime:', this.readingTime);
       return this.readingTime;
     }
     // NOTE: for an alternative dynamic reading time algorithm delay see - https://codepen.io/crissxross/pen/MrxGZY?editors=0010
@@ -137,7 +139,6 @@ export default {
   display: flex;
   flex-direction: column;
   padding: 10px 5px 10px;
-  /* padding: 5px; */
   color: #F4F4F4;
 }
 /* ANIMATIONS */

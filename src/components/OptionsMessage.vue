@@ -34,17 +34,16 @@ export default {
     };
   },
   created() {
-    console.log('OptionsMessage created & emits a fixed numOfWordsToRead!');
     // emit numOfWordsToRead here to allow time for animation transition so that the msg speech bubble doesn't jump up
     eventBus.$emit('numOfWordsToRead', 3);
+    // console.log('OptionsMessage created & emits a fixed numOfWordsToRead');
   },
   methods: {
     choose(msgId, option) {
-      console.log('OptionsMessage id', msgId, 'chose:', option);
+      // console.log('OptionsMessage id', msgId, 'chose:', option);
       this.choiceMade = true;
       this.chosenOptionId = option;
       eventBus.$emit('optionChosen', msgId, option);
-      // eventBus.$emit('numOfWordsToRead', 0);
     }
   }
 };
@@ -132,7 +131,6 @@ a:hover {
 
 .icon {
   text-align: center;
-/*   border: 1px solid #666; */
 }
 
 /* ANIMATION */
