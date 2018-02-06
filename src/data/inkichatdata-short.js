@@ -1,4 +1,5 @@
 // truncated chat text for development use or testing
+// stops where girl is interrupted by mum
 export const ChatData = [
   {
     id: 1,
@@ -131,7 +132,39 @@ export const ChatData = [
     id: 16,
     actor: 'girl',
     actionType: 'SAYS',
-    text: 'Becs?',
+    text: 'u there?',
     pause: 3000
+  },
+  {
+    id: 17,
+    actor: 'girl',
+    actionType: 'SAYS',
+    text: 'anyway KPC is not that hard',
+    pause: 1500
+  },
+  {
+    id: 18,
+    actor: 'other',
+    actionType: 'SAYS',
+    text: 'KPC?'
+  },
+  {
+    id: 19,
+    actor: 'girl',
+    actionType: 'SAYS',
+    text: 'keeping parents clueless'
+  },
+  {
+    id: 20,
+    actor: 'other',
+    actionType: 'SAYS',
+    text: 'lololoool'
+  },
+  {
+    id: 21,
+    actor: 'girl',
+    actionType: 'SAYS',
+    text: 'p999! sec',
+    pause: 4000
   }
 ];
