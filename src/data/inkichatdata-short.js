@@ -118,7 +118,7 @@ export const ChatData = [
     actor: 'girl',
     actionType: 'SAYS',
     text: 'if you think I\'m showing off, I\'m not',
-    pause: 3000
+    pause: 2500
     // pauses come after own id text, i.e. pause before next id msg
   },
   {
@@ -126,14 +126,14 @@ export const ChatData = [
     actor: 'girl',
     actionType: 'SAYS',
     text: 'Beccy?',
-    pause: 4000
+    pause: 3000
   },
   {
     id: 16,
     actor: 'girl',
     actionType: 'SAYS',
     text: 'u there?',
-    pause: 3000
+    pause: 2500
   },
   {
     id: 17,
