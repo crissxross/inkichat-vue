@@ -1,0 +1,19 @@
+NOTES & TO DO
+
+ISSUES TO FIX:
+
+  ☐ With long version of inkichatdata, sometimes get uncaught error (in promise): Cannot read property of 'actionType' of undefined - (see in Evernote):
+  ☐ so firstly, add a try catch
+
+  ☐ Check animation timings - do disappearing message bubbles fade out quickly enough?
+
+Maybe TODO:
+
+  ☐ Split long inkichatdata into short scenes to be shown on different screens as player navigates the space?
+  ☐ If short scenes needed, use routing?
+
+Graphic design IMPROVEMENTS:
+
+  ☐ Font? local
+  ☐ custom icons - svg
+  ☐ improve colour scheme?
