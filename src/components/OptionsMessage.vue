@@ -2,20 +2,18 @@
   <transition name="slidey" mode="out-in">
   <!-- show options -->
   <div v-if="!choiceMade" :class="chatMsg.actor == 'other' ? otherClass : selfClass" key="choose">
+    <!-- @click="choose(chatMsg.id, 0)" removed because causing errors -->
     <a class="q-option btn"
-      @click="choose(chatMsg.id, 0)"
       @mouseover="gazeTimeChoose(chatMsg.id, 0)"
       @mouseout="cancelGazeTime()"
     >
       {{chatMsg.options[0].text}}</a>
     <a class="q-option btn"
-      @click="choose(chatMsg.id, 1)"
       @mouseover="gazeTimeChoose(chatMsg.id, 1)"
       @mouseout="cancelGazeTime()"
     >
       {{chatMsg.options[1].text}}</a>
     <a class="q-option btn"
-      @click="choose(chatMsg.id, 2)"
       @mouseover="gazeTimeChoose(chatMsg.id, 2)"
       @mouseout="cancelGazeTime()"
     >
@@ -50,6 +48,8 @@ export default {
     // emit numOfWordsToRead here to allow time for animation transition so that the msg speech bubble doesn't jump up
     eventBus.$emit('numOfWordsToRead', 3);
   },
+  // TODO - FIX if click handler needed:
+  // I removed @click="choose(...)" because it was causing errors
   methods: {
     choose(msgId, option) {
       // console.log('OptionsMessage id', msgId, 'chose:', option);
@@ -61,7 +61,7 @@ export default {
       // console.log('MOUSEOVER msgId option', msgId, option);
       this.gazeTimer = setTimeout(() => {
         this.choose(msgId, option);
-      }, 2000);
+      }, 1500);
     },
     cancelGazeTime() {
       // console.log('MouseOUT');

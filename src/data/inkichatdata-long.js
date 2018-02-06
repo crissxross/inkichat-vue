@@ -451,7 +451,7 @@ export const ChatData = [
     id: 49,
     actor: 'other',
     actionType: 'SAYS',
-    text: 'The question is will more people like you if'
+    text: 'The question is will more people like you if...'
   },
   {
     id: 50,
@@ -463,23 +463,23 @@ export const ChatData = [
     id: 51,
     actor: 'other',
     actionType: 'SAYS',
-    text: 'Answer the question! Will more people like you if'
+    text: 'Answer the question! What will make people like you?'
   },
   {
     id: 52,
-    actor: 'other',
+    actor: 'girl',
     actionType: 'OPTIONS',
     options: [
       {
-        text: 'you look pretty as a doll?',
+        text: 'looking pretty as a doll',
         score: 10
       },
       {
-        text: 'you look like you\'re not very clever?',
+        text: 'if you look like you\'re not very clever',
         score: 5
       },
       {
-        text: 'you make them laugh?',
+        text: 'making them laugh',
         score: 0
       }
     ]
@@ -490,7 +490,7 @@ export const ChatData = [
     actionType: 'REPLIES',
     replies: [
       'Cute! Everyone likes a pretty face',
-      'No one likes a know-all',
+      'ya no one likes a know-all',
       'TTTT your jokes are embarrassing, seriously'
     ]
   },
@@ -533,7 +533,7 @@ export const ChatData = [
   },
   {
     id: 60,
-    actor: 'other',
+    actor: 'girl',
     actionType: 'OPTIONS',
     options: [
       {
@@ -568,7 +568,7 @@ export const ChatData = [
   },
   {
     id: 63,
-    actor: 'other',
+    actor: 'girl',
     actionType: 'OPTIONS',
     options: [
       {
@@ -615,7 +615,7 @@ export const ChatData = [
   },
   {
     id: 68,
-    actor: 'other',
+    actor: 'girl',
     actionType: 'OPTIONS',
     options: [
       {
@@ -681,7 +681,7 @@ export const ChatData = [
     id: 73,
     actor: 'other',
     actionType: 'SAYS',
-    text: 'Is a doll cool, helpless or trapped?'
+    text: 'Tell me, a doll is...?'
   },
   {
     id: 74,

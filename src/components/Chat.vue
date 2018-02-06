@@ -11,7 +11,7 @@
 
 <script>
 import Message from './Message';
-import { ChatData } from '../data/inkichatdata-short';
+import { ChatData } from '../data/inkichatdata-long';
 import { eventBus } from '../event-bus';
 
 export default {
