@@ -62,7 +62,7 @@ export default {
     },
     stopSendingMessages() {
       this.start = false;
-      console.log(this.start, 'so stop!');
+      // console.log(this.start, 'so stop!');
     },
     delay(ms) {
       return new Promise((resolve) => setTimeout(resolve, ms));
@@ -103,7 +103,7 @@ export default {
       return sentMsgs.slice(this.startIndexVis, this.endIndexVis);
     },
     handleChosenOptionMsg(msgId, option) {
-      console.log('handleChosenOptionMsg msg id:', msgId, ' option:', option);
+      // console.log('handleChosenOptionMsg msg id:', msgId, ' option:', option);
       if (this.currentMsgId === msgId) {
         this.latestReplyId = option;
       }

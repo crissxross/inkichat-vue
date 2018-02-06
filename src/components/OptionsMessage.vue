@@ -2,11 +2,23 @@
   <transition name="slidey" mode="out-in">
   <!-- show options -->
   <div v-if="!choiceMade" :class="chatMsg.actor == 'other' ? otherClass : selfClass" key="choose">
-    <a class="q-option btn" @click="choose(chatMsg.id, 0)">
+    <a class="q-option btn"
+      @click="choose(chatMsg.id, 0)"
+      @mouseover="gazeTimeChoose(chatMsg.id, 0)"
+      @mouseout="cancelGazeTime()"
+    >
       {{chatMsg.options[0].text}}</a>
-    <a class="q-option btn" @click="choose(chatMsg.id, 1)">
+    <a class="q-option btn"
+      @click="choose(chatMsg.id, 1)"
+      @mouseover="gazeTimeChoose(chatMsg.id, 1)"
+      @mouseout="cancelGazeTime()"
+    >
       {{chatMsg.options[1].text}}</a>
-    <a class="q-option btn" @click="choose(chatMsg.id, 2)">
+    <a class="q-option btn"
+      @click="choose(chatMsg.id, 2)"
+      @mouseover="gazeTimeChoose(chatMsg.id, 2)"
+      @mouseout="cancelGazeTime()"
+    >
       {{chatMsg.options[2].text}}</a>
   </div>
   <!-- show chosen option if choice made -->
@@ -30,13 +42,13 @@ export default {
       otherClass: 'quiz-grid other',
       selfClass: 'quiz-grid self',
       chosenOptionId: null,
-      choiceMade: false // is this necessary?
+      choiceMade: false, // is this necessary?
+      gazeTimer: null
     };
   },
   created() {
     // emit numOfWordsToRead here to allow time for animation transition so that the msg speech bubble doesn't jump up
     eventBus.$emit('numOfWordsToRead', 3);
-    // console.log('OptionsMessage created & emits a fixed numOfWordsToRead');
   },
   methods: {
     choose(msgId, option) {
@@ -44,6 +56,16 @@ export default {
       this.choiceMade = true;
       this.chosenOptionId = option;
       eventBus.$emit('optionChosen', msgId, option);
+    },
+    gazeTimeChoose(msgId, option) {
+      // console.log('MOUSEOVER msgId option', msgId, option);
+      this.gazeTimer = setTimeout(() => {
+        this.choose(msgId, option);
+      }, 2000);
+    },
+    cancelGazeTime() {
+      // console.log('MouseOUT');
+      clearTimeout(this.gazeTimer);
     }
   }
 };
