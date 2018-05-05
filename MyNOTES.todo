@@ -2,11 +2,15 @@ NOTES & TO DO
 
 ISSUES TO FIX / CHECK:
 
+  ☐ girl's blue chat message bubble jumps sideways before disappearing from top of screen/viewport:
+    ☐ check grid / flexbox
+    ☐ check position absolute & animation timing...
+
+  ☐ Check animation timings - do disappearing message bubbles fade out quickly enough?
+
   ☐ Check that this error does not recurr - uncaught error (in promise): Cannot read property of 'actionType' of undefined - (see in Evernote) - seemed to be caused by click handler conflicting with mouseover
   ☐ if so, add a try catch
   ☐ maybe I need to return a promise from setTimeout in gazeTimeChoose function?
-
-  ☐ Check animation timings - do disappearing message bubbles fade out quickly enough?
 
 Maybe TODO:
 
